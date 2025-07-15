@@ -4,10 +4,9 @@ import pandas as pd
 import requests_cache
 from retry_requests import retry
 import requests
+from Demandes_utilisateur import obtenir_donnees_utilisateur
 
-from demandes_utilisateur import obtenir_donnees_utilisateur
 
-# Initialisation des sessions pour les requêtes
 cache_session = requests_cache.CachedSession('.cache', expire_after=3600)
 retry_session = retry(cache_session, retries=5, backoff_factor=0.2)
 openmeteo = openmeteo_requests.Client(session=retry_session)
@@ -36,7 +35,7 @@ def get_irradiance_data(date_debut, date_fin, latitude, longitude):
     print(f"Timezone {response.Timezone()}{response.TimezoneAbbreviation()}")
     print(f"Timezone difference to GMT+0 {response.UtcOffsetSeconds()} s")
 
-    # Extraction des données horaires
+ 
     hourly = response.Hourly()
     hourly_shortwave_radiation = hourly.Variables(0).ValuesAsNumpy()
 
@@ -53,11 +52,11 @@ def get_irradiance_data(date_debut, date_fin, latitude, longitude):
     hourly_dataframe = pd.DataFrame(data=hourly_data)
     hourly_dataframe.to_csv("donnees_irradiation.csv", index=False)
 
-    return hourly_dataframe  # Retourne le DataFrame pour utilisation ailleurs
+    return hourly_dataframe  
 
-# 🔹 Exemple d'utilisation :
+
 if __name__ == "__main__":
     df = get_irradiance_data()
     if df is not None:
-        print(df.head())  # Affiche les premières lignes
+        print(df.head()) 
 

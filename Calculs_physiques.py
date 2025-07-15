@@ -1,12 +1,12 @@
 import pandas as pd
-from API_météo import get_irradiance_data  # Assurez-vous que le nom du fichier correspond exactement (majuscules/accents)
+from API_météo import get_irradiance_data 
 
 def calcul_puissance_pv(surface, rendement, irradiance, performance_ratio):
-    """Calcule la puissance produite par un panneau solaire."""
+   
     return surface * rendement * irradiance * performance_ratio
 
 def calcul_energie_pv(surface, rendement, performance_ratio, df):
-    """Calcule l'énergie produite et retourne un DataFrame enrichi."""
+    
     df["date"] = pd.to_datetime(df["date"])  
     df_filtered = df[(df["date"].dt.hour >= 0) & (df["date"].dt.hour <= 23)].copy()
     
@@ -17,13 +17,11 @@ def calcul_energie_pv(surface, rendement, performance_ratio, df):
     
     return df_filtered
 
-# --- Partie à supprimer si vous utilisez Streamlit ---
-# (Cette partie ne devrait plus être dans ce fichier si vous avez un app.py séparé)
+
 if __name__ == "__main__":
-    # Exemple d'utilisation autonome (test)
-    from demandes_utilisateur import obtenir_donnees_utilisateur  # Nouveau module où vous avez déplacé cette fonction
     
-    print("Mode test autonome - Saisie des paramètres :")
+    from Demandes_utilisateur import obtenir_donnees_utilisateur  
+    
     date_debut, date_fin, latitude, longitude = obtenir_donnees_utilisateur()
     
     if None not in [date_debut, date_fin, latitude, longitude]:
